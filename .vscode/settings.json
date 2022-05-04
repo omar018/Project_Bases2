@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "MultiChainJavaAPI-2.0.2-SNAPSHOT-jar-with-dependencies.jar"
+    ]
+}
