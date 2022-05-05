@@ -35,7 +35,7 @@ public class Main {
 
      
         //hashmap con la llave del candidato y su nombre y partido
-    public HashMap<String,String[]> cuentaCandidatos = new HashMap<String,String[]>();
+    public static HashMap<String,String[]> cuentaCandidatos = new HashMap<String,String[]>();
         //hashmap con el nombre y el partido del candidato y su cantidad de votos
     public static HashMap<String[],Integer> candidatosVotos = new HashMap<String[],Integer>();
 
@@ -67,16 +67,20 @@ public class Main {
             String gson = new Gson().toJson(voto.getData());
             JsonObject json = parser.parse(gson).getAsJsonObject();
             String llaveCandidato = json.getAsJsonObject("json").get("voto").getAsString();
+            if (llaveCandidato!=null){
+
+            
             //tomamos el nombre y el partido asociados a la llave del candidato
             String [] nompar = cuentaCandidatos.get(llaveCandidato);
             //tomamos la cantidad de votos del candidato
             Integer voteCount = candidatosVotos.get(nompar);
-            if (nompar[0] !=null){
-                System.out.println("llave que me trae la lista: "+llaveCandidato+ " string[] " + nompar[0] + " votos " + voteCount);
-            }
             //System.out.println(Arrays.toString(nompar) +  " " + voteCount);
             //le sumamos un voto
-            //candidatosVotos.put(nompar,voteCount+1);
+            if (nompar != null){
+            candidatosVotos.put(nompar,voteCount+1);
+            //System.out.println(Arrays.toString(nompar) +  " " + voteCount);
+            }
+            }
         }
         }
     }
@@ -87,9 +91,9 @@ public class Main {
         String jsonString = gson.toJson(s);
         JsonParser parser = new JsonParser();
         JsonObject j = parser.parse(s).getAsJsonObject();
-        System.out.println(j);
+        //System.out.println(j);
         commandManager.invoke(CommandElt.SUBSCRIBE, "Votos");
-        commandManager.invoke(CommandElt.PUBLISH, "Votos", voto, j);
+        commandManager.invoke(CommandElt.PUBLISH, "Votos", votante, j);
         } catch (MultichainException e){
             e.printStackTrace();
         }
@@ -113,6 +117,11 @@ public class Main {
             commandManager.invoke(CommandElt.SUBSCRIBE, "Votos");
             votos = (List<StreamKeyItem>) commandManager.invoke(CommandElt.LISTSTREAMITEMS, "Votos");
             m.llenarVotos(votos);
+
+            // for(Entry<String,String[]> entry : cuentaCandidatos.entrySet()){
+            //     System.out.println(Arrays.toString(entry.getValue()));
+            //     System.out.println(entry.getKey());
+            // }
         } catch (MultichainException e) {
             e.printStackTrace();
 
@@ -135,6 +144,6 @@ public class Main {
         // //     Integer value = entry.getValue();
         // //     System.out.println(Arrays.toString(keys) + " " + value);
         // // }
-        // new GUI(); // lanzamos la interfaz 
+        new GUI(); // lanzamos la interfaz 
     }
 }

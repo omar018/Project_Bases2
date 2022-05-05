@@ -1,10 +1,13 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 
+import javax.print.event.PrintEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,10 +16,14 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 public class Votar extends JPanel implements ActionListener{
     private Main m;
     private JLabel tituloCandidatos;
-    private JLabel candid;
     private JLabel userLabel;
     private JLabel voteLabel;
     private JTextField userVote;
@@ -24,8 +31,40 @@ public class Votar extends JPanel implements ActionListener{
     private JButton botonVolver;
     private List<String> votantes;
     private JFrame frame;
+    private JTextArea textArea;
+    private FileReader reader;
+    private PrintWriter escritor;
     public Votar(JFrame currentFrame){
         m = new Main();
+        //conseguir la lista de candidatos que está en el hashmap cuentaCandidatos
+        try {
+            escritor = new PrintWriter("candidatos.txt");
+            for(Entry<String,String[]> entry : m.cuentaCandidatos.entrySet()){
+                String key = entry.getKey();
+                String[] value = entry.getValue();
+                //System.out.println("llave "+ key + " votos " + value);
+                escritor.print(key + " " + Arrays.toString(value));
+            }
+            escritor.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //leer la lista de candidatos que está en el archivo candidatos.txt
+        try {
+            reader = new FileReader("candidatos.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        textArea = new JTextArea(5,20);
+        try {
+            textArea.read(reader, "candidatos.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        textArea.setEnabled(false);
+        this.add(textArea);
         //lista de documentos de los votantes
         votantes= new ArrayList<String>();
         this.frame = currentFrame;
@@ -38,9 +77,6 @@ public class Votar extends JPanel implements ActionListener{
         tituloCandidatos.setBounds(10,-10,80,25);
         this.add(tituloCandidatos);
 
-        candid = new JLabel("juan,jose,camilo,laura,antonia,maria");       
-        candid.setBounds(10,10,80,25);
-        this.add(candid);
 
         userLabel = new JLabel("Usuario");
         userLabel.setBounds(10, 40, 80,25);;

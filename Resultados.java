@@ -42,14 +42,12 @@ public class Resultados extends JPanel implements ActionListener{
         try {
             reader = new FileReader("resultados.txt");
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         textArea = new JTextArea(10,20);
         try {
             textArea.read(reader,"resultados.txt");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         textArea.setEnabled(false);
