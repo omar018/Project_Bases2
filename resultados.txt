@@ -1,0 +1,3 @@
+[juan, elp] cantidad de votos: 0
+[jose, ppp] cantidad de votos: 0
+[camilo, ttt] cantidad de votos: 0

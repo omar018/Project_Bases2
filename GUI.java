@@ -26,7 +26,7 @@ public class GUI extends Main implements ActionListener{
 
 
         panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(200, 200,200, 200));
+        panel.setBorder(BorderFactory.createEmptyBorder(200, 200,150, 150));
         panel.setLayout(new GridLayout(0,1));
         panel.add(botonVotar);
         panel.add(botonResultados);
@@ -54,15 +54,18 @@ public class GUI extends Main implements ActionListener{
         textoBoton = b.getText();
         if (textoBoton.equals("Votar")){
             //aqui tendría que cambiar de panel
-            Votar v = new Votar();
-            System.out.print("votar");
+            Votar v = new Votar(frame);
             frame.setVisible(false);
             nuevoPanel(v);
             frame.setVisible(true);
+            frame.pack();
         }else if (textoBoton.equals("Resultados")){
             //aqui cambia al panel de resultados
             Resultados r = new Resultados();
+            frame.setVisible(false);
             nuevoPanel(r);
+            frame.setVisible(true);
+            frame.pack();
         }
     }
     public JFrame getFrame(){
